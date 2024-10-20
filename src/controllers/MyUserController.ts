@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import User from "../models/user";
 import { error } from "console";
 
+/**
+ * Create a new user
+ * @description This function creates a new user in the database if it doesn't already exist.
+ */
 const createCurrentUser = async (req: Request, res: Response) => {
   try {
     // 1. Check if user exists
