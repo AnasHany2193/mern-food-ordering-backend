@@ -1,7 +1,15 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
+/**
+ * index.ts File
+ * @description This file is the entry point of the server. It is responsible for starting the server and listening to requests.
+ */
+
 import "dotenv/config";
+import cors from "cors";
 import mongoose from "mongoose";
+import express, { Request, Response } from "express";
+
+// port to listen to requests
+const PORT = process.env.PORT || 3000;
 
 /**
  * @description Connect to MongoDB
@@ -11,11 +19,8 @@ mongoose
   .then(() => console.log("-> Connected to MongoDB!"))
   .catch((err) => console.log("MongoDB Disconnected!", err));
 
-// const PORT = process.env.PORT || 3000;
-const PORT = 5000;
-
 /**
- * @description Express app
+ * @description Express app instance to handle requests and routes for the server
  */
 const app = express();
 
@@ -37,7 +42,7 @@ app.get("/hello", async (req: Request, res: Response) => {
 });
 
 /**
- * @description Route to start the server.
+ * @description App listening route to start the server and listen to requests
  */
 app.listen(PORT, () => {
   console.log(
