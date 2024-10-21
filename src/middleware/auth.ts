@@ -33,20 +33,14 @@ export const jwtParse = async (
     res.sendStatus(401);
     return;
   }
-  console.log("authorization", authorization);
 
   const token = authorization.split(" ")[1];
-  console.log("token", token);
 
   try {
     const decoded = jwt.decode(token) as jwt.JwtPayload;
-    console.log("decoded", decoded);
-
     const auth0Id = decoded.sub;
-    console.log("auth0Id", auth0Id);
 
     const user = await User.findOne({ auth0Id });
-    console.log("user", user);
 
     if (!user) {
       res.sendStatus(401);
@@ -55,7 +49,6 @@ export const jwtParse = async (
 
     req.auth0Id = auth0Id as string;
     req.userId = user._id.toString();
-    next();
   } catch (error) {
     res.sendStatus(401);
     return;

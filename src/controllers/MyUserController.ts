@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import User from "../models/user";
-import { error } from "console";
+
+const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    // 01. Get user from the database
+    const currentUser = await User.findOne({ _id: req.userId });
+
+    if (!currentUser) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    // 02. Return user object to the calling client
+    res.json(currentUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error getting user", error });
+  }
+};
 
 /**
  * Create a new user
@@ -44,7 +61,7 @@ const updateCurrentUser = async (req: Request, res: Response) => {
       return;
     }
 
-    // 02. Update user and save changes to database
+    // 02. Update user and save changes to the database
     existingUser.name = name;
     existingUser.city = city;
     existingUser.country = country;
@@ -53,10 +70,11 @@ const updateCurrentUser = async (req: Request, res: Response) => {
     await existingUser.save();
 
     // 03. Return user object to the calling client
-    res.status(200).send(existingUser);
+    res.send(existingUser);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error updating user", error });
   }
 };
-export default { createCurrentUser, updateCurrentUser };
+
+export default { getCurrentUser, createCurrentUser, updateCurrentUser };
