@@ -1,9 +1,10 @@
+import express, { Request, Response } from "express";
+
 import "dotenv/config";
 import cors from "cors";
 import mongoose from "mongoose";
 
 import myUserRoute from "./routes/MyUserRoute";
-import express, { Request, Response } from "express";
 
 // port to listen to requests
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,9 @@ app.use(cors());
  * @description Routes to handle requests for the server
  */
 app.use("/api/my/user", myUserRoute);
+app.use("/test", (req: Request, res: Response) => {
+  res.send({ message: "Hello, World!" });
+});
 
 /**
  * @description App listening route to start the server and listen to requests
