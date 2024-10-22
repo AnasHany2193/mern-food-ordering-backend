@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 
+/**
+ * Get current user
+ * @description This function returns the current user from the database.
+ */
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
     // 01. Get user from the database
@@ -14,7 +18,6 @@ const getCurrentUser = async (req: Request, res: Response) => {
     // 02. Return user object to the calling client
     res.json(currentUser);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error getting user", error });
   }
 };
@@ -41,7 +44,6 @@ const createCurrentUser = async (req: Request, res: Response) => {
     // 3. Return user object to the calling client
     res.status(201).json(newUser.toObject());
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error creating user", error });
   }
 };
@@ -72,7 +74,6 @@ const updateCurrentUser = async (req: Request, res: Response) => {
     // 03. Return user object to the calling client
     res.send(existingUser);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error updating user", error });
   }
 };

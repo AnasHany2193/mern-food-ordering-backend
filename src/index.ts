@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 
 import myUserRoute from "./routes/MyUserRoute";
+import myRestaurantRoute from "./routes/MyRestaurantRoute";
 
 // port to listen to requests
 const PORT = process.env.PORT || 3000;
@@ -46,6 +47,7 @@ app.use(cors());
  * @description Routes to handle requests for the server
  */
 app.use("/api/my/user", myUserRoute);
+app.use("/api/my/restaurant", myRestaurantRoute);
 app.use("/test", (req: Request, res: Response) => {
   res.send({ message: "Hello, World!" });
 });
