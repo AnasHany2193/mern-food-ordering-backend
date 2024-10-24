@@ -49,7 +49,7 @@ export const validateMyRestaurantRequest = [
     .withMessage("Estimated delivery time must be a positive integer"),
   body("cuisines")
     .isArray()
-    .withMessage("Cuisine must be an array")
+    .withMessage("Cuisines must be an array")
     .not()
     .isEmpty()
     .withMessage("Cuisines array cannot be empty"),

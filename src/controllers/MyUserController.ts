@@ -10,12 +10,13 @@ const getCurrentUser = async (req: Request, res: Response) => {
     // 01. Get user from the database
     const currentUser = await User.findOne({ _id: req.userId });
 
+    // 02. Check if user exists
     if (!currentUser) {
       res.status(404).json({ message: "User not found" });
       return;
     }
 
-    // 02. Return user object to the calling client
+    // 03. Return user object to the calling client
     res.json(currentUser);
   } catch (error) {
     res.status(500).json({ message: "Error getting user", error });

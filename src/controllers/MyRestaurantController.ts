@@ -6,6 +6,28 @@ import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 
 /**
+ * Get my restaurant
+ * @description This function returns the current user's restaurant.
+ */
+const getMyRestaurant = async (req: Request, res: Response) => {
+  try {
+    // 01. Get the restaurant from the database
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+
+    // 02. Check if the restaurant exists
+    if (!restaurant) {
+      res.status(404).json({ message: "Restaurant not found" });
+      return;
+    }
+
+    // 03. Return the restaurant
+    res.json(restaurant);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting restaurant", error });
+  }
+};
+
+/**
  * Create a new restaurant
  * @description This function creates a new restaurant in the database if it doesn't already exist.
  */
@@ -42,4 +64,4 @@ const createMyRestaurant = async (req: Request, res: Response) => {
   }
 };
 
-export default { createMyRestaurant };
+export default { getMyRestaurant, createMyRestaurant };
