@@ -33,4 +33,17 @@ router.post(
   MyRestaurantController.createMyRestaurant
 );
 
+/**
+ * PUT /api/my/restaurant
+ * @description Update a restaurant
+ */
+router.put(
+  "/",
+  upload.single("imageFile"),
+  validateMyRestaurantRequest,
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateMyRestaurant
+);
+
 export default router;
