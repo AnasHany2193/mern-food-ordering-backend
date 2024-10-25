@@ -8,19 +8,19 @@ import { validateMyUserRequest } from "../middleware/validation";
 const router = express.Router();
 
 /**
- * GET /api/my/user
+ * @route GET /api/my/user
  * @description Get current user
  */
 router.get("/", jwtCheck, jwtParse, MyUserController.getCurrentUser);
 
 /**
- * POST /api/my/user
+ * @route POST /api/my/user
  * @description Create a new user
  */
 router.post("/", jwtCheck, MyUserController.createCurrentUser);
 
 /**
- * PUT /api/my/user
+ * @route PUT /api/my/user
  * @description Update current user
  */
 router.put(

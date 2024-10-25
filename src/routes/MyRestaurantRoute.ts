@@ -15,13 +15,13 @@ const upload = multer({
 });
 
 /**
- * GET /api/my/restaurant
+ * @route GET /api/my/restaurant
  * @description Get all restaurant data
  */
 router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
 
 /**
- * POST /api/my/restaurant
+ * @route POST /api/my/restaurant
  * @description Create a new restaurant
  */
 router.post(
@@ -34,7 +34,7 @@ router.post(
 );
 
 /**
- * PUT /api/my/restaurant
+ * @route PUT /api/my/restaurant
  * @description Update a restaurant
  */
 router.put(
