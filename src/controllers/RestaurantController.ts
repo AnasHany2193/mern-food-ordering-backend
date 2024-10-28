@@ -2,6 +2,31 @@ import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 
 /**
+ * Get Restaurant
+ * @description This function is used to get a specific restaurant based on the restaurant id.
+ */
+const getRestaurant = async (req: Request, res: Response) => {
+  try {
+    // 01. Get the restaurant id from the request
+    const { restaurantId } = req.params;
+
+    // 02. Get the restaurant from the database.
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    // 03. If the restaurant is not found, return a 404 error.
+    if (!restaurant) {
+      res.status(404).json({ message: "Restaurant not found" });
+      return;
+    }
+
+    // 04. Return the restaurant.
+    res.status(200).json(restaurant);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+/**
  * Search Restaurant
  * @description This function is used to search for restaurants based on the given search query for the city, cuisines, and the restaurant name.
  */
@@ -80,4 +105,4 @@ const searchRestaurant = async (req: Request, res: Response) => {
   }
 };
 
-export default { searchRestaurant };
+export default { searchRestaurant, getRestaurant };

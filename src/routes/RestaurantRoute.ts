@@ -6,6 +6,20 @@ import { param } from "express-validator";
 const router = express.Router();
 
 /**
+ * @route GET /api/restaurant/:id
+ * @description Get restaurant by id
+ */
+router.get(
+  "/:restaurantId",
+  param("restaurantId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("Restaurant ID must be a valid string"),
+  RestaurantController.getRestaurant
+);
+
+/**
  * @route GET /api/restaurant/search/:city
  * @description Search for restaurants by city
  */
