@@ -5,6 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 
+import orderRoute from "./routes/OrderRoute";
 import myUserRoute from "./routes/MyUserRoute";
 import restaurantRoute from "./routes/RestaurantRoute";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
@@ -44,15 +45,21 @@ app.use(express.json());
  */
 app.use(cors());
 
+// This route is used to check if the server is up and running
+app.get("/health", (req: Request, res: Response) => {
+  res.send({
+    status: "UP",
+    message: "🟢 Server is up and running",
+  });
+});
+
 /**
  * @description Routes to handle requests for the server
  */
+app.use("/api/order", orderRoute);
 app.use("/api/my/user", myUserRoute);
 app.use("/api/restaurant", restaurantRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
-app.use("/test", (req: Request, res: Response) => {
-  res.send({ message: "Hello, World!" });
-});
 
 /**
  * @description App listening route to start the server and listen to requests

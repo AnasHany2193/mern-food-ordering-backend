@@ -21,8 +21,8 @@ const getRestaurant = async (req: Request, res: Response) => {
 
     // 04. Return the restaurant.
     res.status(200).json(restaurant);
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 };
 

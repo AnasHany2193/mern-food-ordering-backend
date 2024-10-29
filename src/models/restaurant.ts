@@ -1,14 +1,21 @@
 import { count } from "console";
-import mongoose, { Schema } from "mongoose";
+import mongoose, { InferSchemaType, Schema } from "mongoose";
 
 /**
  * Menu Items Schema
  * @description Schema for Menu Items
  */
 const menuItemSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+    required: true,
+  },
   name: { type: String, required: true },
   price: { type: Number, required: true },
 });
+
+export type MenuItemType = InferSchemaType<typeof menuItemSchema>;
 
 /**
  * Restaurants Schema
