@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 /**
  * User Schema
- * @description Schema for User model
+ * @description This schema is used to store user data in the database
  */
 const userSchema = new mongoose.Schema({
   auth0Id: { type: String, unique: true, required: true },

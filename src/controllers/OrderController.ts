@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Stripe from "stripe";
 import Restaurant, { MenuItemType } from "../models/restaurant";
+import User from "../models/user";
+import Order from "../models/order";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
@@ -23,13 +25,12 @@ type CheckoutSessionRequest = {
 
 /**
  * Create a checkout session in stripe
- * @description This function will create a checkout session in stripe and return it as a url session object.
+ * @description This function will create a checkout session in stripe and create a new order in the database and return the session url
  */
 const createCheckoutSession = async (req: Request, res: Response) => {
   try {
     // 01. get the restaurantId from the request body
     const checkoutSessionRequest: CheckoutSessionRequest = req.body;
-
     // 02. get the restaurant from the database
     const restaurant = await Restaurant.findById(
       checkoutSessionRequest.restaurantId
@@ -40,16 +41,26 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       return;
     }
 
-    // 03. create the lineItems
+    // 03. create a new order in the database
+    const newOrder = new Order({
+      restaurant: restaurant,
+      user: req.userId,
+      status: "placed",
+      cartItems: checkoutSessionRequest.cartItems,
+      deliveryDetails: checkoutSessionRequest.deliveryDetails,
+      createdAt: new Date(),
+    });
+
+    // 04. create a lineItems array with the menuItems and the quantity
     const lineItems = createLineItems(
       restaurant.menuItems,
       checkoutSessionRequest
     );
 
-    // 04. create the checkout session in stripe
+    // 05. create a session in stripe
     const session = await createSession(
       lineItems,
-      "TEST_ORDER_ID",
+      newOrder._id.toString(),
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );
@@ -59,12 +70,13 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       return;
     }
 
-    // 05. return the session url to the client
+    // 06. save the new order in the database
+    await newOrder.save();
+
+    // 07. return the session url
     res.json({ url: session.url });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Error creating the checkout session.", error });
+    res.status(500).json({ message: "Error creating checkout session", error });
   }
 };
 
@@ -117,7 +129,10 @@ const createSession = async (
         shipping_rate_data: {
           type: "fixed_amount",
           display_name: "Delivery",
-          fixed_amount: { amount: deliveryPrice, currency: "gbp" },
+          fixed_amount: {
+            amount: Math.round(deliveryPrice * 100),
+            currency: "gbp",
+          },
         },
       },
     ],

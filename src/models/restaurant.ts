@@ -3,7 +3,7 @@ import mongoose, { InferSchemaType, Schema } from "mongoose";
 
 /**
  * Menu Items Schema
- * @description Schema for Menu Items
+ * @description This schema is used to store menu items in the database
  */
 const menuItemSchema = new mongoose.Schema({
   _id: {
@@ -19,7 +19,7 @@ export type MenuItemType = InferSchemaType<typeof menuItemSchema>;
 
 /**
  * Restaurants Schema
- * @description Schema for Restaurants and their menu items
+ * @description This schema is used to store restaurants in the database and their menu items
  */
 const restaurantSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
