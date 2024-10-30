@@ -15,4 +15,8 @@ router.post(
   OrderController.createCheckoutSession
 );
 
+// /checkout/webhook
+// whsec_d2d3542962f5c222c005dc37717ef65d9bed253ef30b482003dfe9ac79c61cf7
+router.post("/checkout/webhook", OrderController.stripeWebhookHandler);
+
 export default router;

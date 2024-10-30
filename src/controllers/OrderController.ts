@@ -23,6 +23,12 @@ type CheckoutSessionRequest = {
   restaurantId: string;
 };
 
+const stripeWebhookHandler = async (req: Request, res: Response) => {
+  console.log("stripe received a webhook");
+  console.log("event: ", req.body);
+  res.send();
+};
+
 /**
  * Create a checkout session in stripe
  * @description This function will create a checkout session in stripe and create a new order in the database and return the session url
@@ -145,4 +151,4 @@ const createSession = async (
     cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
-export default { createCheckoutSession };
+export default { createCheckoutSession, stripeWebhookHandler };
