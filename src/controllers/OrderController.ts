@@ -8,6 +8,18 @@ const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
+const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const order = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user");
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting customer orders", error });
+  }
+};
+
 type CheckoutSessionRequest = {
   cartItems: {
     name: string;
@@ -191,4 +203,8 @@ const createSession = async (
     cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
-export default { createCheckoutSession, stripeWebhookHandler };
+export default {
+  getMyOrders,
+  stripeWebhookHandler,
+  createCheckoutSession,
+};
