@@ -36,14 +36,19 @@ cloudinary.config({
 const app = express();
 
 /**
+ * @description Middleware to enable CORS: Cross-Origin Resource Sharing that prevent XSS attacks and other security issues by allowing requests from specific domains.
+ */
+app.use(cors());
+
+/**
+ * @description Middleware to enable raw data (for webhook requests)
+ */
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+/**
  * @description Middleware to parse JSON data
  */
 app.use(express.json());
-
-/**
- * @description Middleware to enable CORS: Cross-Origin Resource Sharing
- */
-app.use(cors());
 
 // This route is used to check if the server is up and running
 app.get("/health", (req: Request, res: Response) => {

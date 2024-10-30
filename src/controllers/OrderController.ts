@@ -6,6 +6,7 @@ import Order from "../models/order";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
+const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 type CheckoutSessionRequest = {
   cartItems: {
@@ -23,10 +24,49 @@ type CheckoutSessionRequest = {
   restaurantId: string;
 };
 
+/**
+ * Stripe webhook handler
+ * @description This function will handle the stripe webhook and update the order status in the database
+ */
 const stripeWebhookHandler = async (req: Request, res: Response) => {
-  console.log("stripe received a webhook");
-  console.log("event: ", req.body);
-  res.send();
+  let event;
+
+  // 01. get the stripe signature from the request headers
+  try {
+    // 01.1 get the stripe signature from the request headers
+    const sig = req.headers["stripe-signature"];
+
+    // 01.2 create the webhook endpoint
+    event = Stripe.webhooks.constructEvent(
+      req.body,
+      sig as string,
+      STRIPE_ENDPOINT_SECRET
+    );
+  } catch (error: any) {
+    res.status(400).send(`Webhook Error: ${error.message}`);
+    return;
+  }
+
+  // 02. check the event type
+  if (event.type === "checkout.session.completed") {
+    // 02.1 Check if the order exists in the database
+    const order = await Order.findById(event.data.object.metadata?.orderId);
+
+    if (!order) {
+      res.status(400).json({ message: "Order not found" });
+      return;
+    }
+
+    // 02.2 update the order with the new status
+    order.totalAmount = event.data.object.amount_total;
+    order.status = "paid";
+
+    // 02.3 save the order in the database
+    await order.save();
+  }
+
+  // 03. send a response back to stripe
+  res.status(200).send();
 };
 
 /**
