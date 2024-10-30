@@ -32,6 +32,17 @@ router.get(
 );
 
 /**
+ * @route PATCH /api/my/restaurant/order/:orderId/status
+ * @description Update order status
+ */
+router.patch(
+  "/order/:orderId/status",
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateOrderStatus
+);
+
+/**
  * @route POST /api/my/restaurant
  * @description Create a new restaurant
  */
