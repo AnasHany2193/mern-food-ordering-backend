@@ -73,6 +73,10 @@ The backend is built with **Node.js**, **Express**, **MongoDB**, and **Mongoose*
 
 To complete the project, clone and set up the frontend as described [here](https://github.com/AnasHany2193/mern-food-ordering-frontend). Make sure the frontend `.env` file is configured to connect with this backend.
 
+## Project Video 📹
+
+![A demo video](src/assets/mern-food-ordering.mp4)
+
 ## API Endpoints 📚
 
 - **Authentication**: `/api/auth`
