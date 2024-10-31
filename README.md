@@ -44,12 +44,21 @@ The backend is built with **Node.js**, **Express**, **MongoDB**, and **Mongoose*
    Create a `.env` file at the root of the project with the following variables:
 
    ```plaintext
-   PORT=7000
-   MONGO_URI=<Your MongoDB URI>
-   AUTH0_DOMAIN=<Your Auth0 domain>
-   AUTH0_CLIENT_ID=<Your Auth0 Client ID>
-   AUTH0_CLIENT_SECRET=<Your Auth0 Client Secret>
-   STRIPE_SECRET_KEY=<Your Stripe Secret Key>
+   PORT=5000
+
+   MONGODB_CONNECTION_STRING=<Your MongoDB Connection String>
+
+   AUTH0_AUDIENCE=<Your Auth0 API Audience>
+   AUTH0_ISSUER_BASE_URL=<Your Auth0 Issuer URL>
+   AUTH0_TOKEN_SIGNING_ALG=<Your Auth0 Token Signing Algorithm>
+
+   CLOUDINARY_API_KEY=<Your Cloudinary API Key>
+   CLOUDINARY_API_SECRET=<Your Cloudinary API Secret>
+   CLOUDINARY_CLOUD_NAME=<Your Cloudinary Cloud Name>
+
+   FRONTEND_URL=<Your Frontend URL>
+   STRIPE_API_KEY=<Your Stripe API Key>
+   STRIPE_WEBHOOK_SECRET=<Your Stripe Webhook Secret>
    ```
 
 4. **Start the Development Server**:
