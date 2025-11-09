@@ -1,5 +1,3 @@
-Here's a **README.md** file for your backend repository:
-
 # MERN Food Ordering - Backend 🍔🍕🍜
 
 Welcome to the backend repository for the **MERN Food Ordering App**! This project handles API functionality, database management, and integrations for a full-featured food ordering platform.
